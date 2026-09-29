@@ -1,0 +1,40 @@
+name: Gitconfig Lint
+
+# Confirms all three platform files actually parse as valid Git config and
+# carry the same identity/signing/hooks settings, only the credential
+# helper is expected to differ between them.
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Validate platform config files
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Parse each platform file
+        run: |
+          for f in mac/gitconfig linux/gitconfig windows/gitconfig; do
+            echo "Checking $f"
+            git config --file "$f" --list > /dev/null
+          done
+
+      - name: Confirm only credential.helper differs
+        run: |
+          for pair in "mac linux" "mac windows"; do
+            set -- $pair
+            diff <(grep -v '^\s*helper = ' "$1/gitconfig") <(grep -v '^\s*helper = ' "$2/gitconfig")
+          done
