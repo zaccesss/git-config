@@ -15,3 +15,7 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   and hook wiring
 - Setup and reference guides
 - CI that validates every file parses
+
+### Changed
+
+- Tidied code comments and the contributor guide.

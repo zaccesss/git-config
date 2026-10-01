@@ -1,6 +1,6 @@
 name: Gitconfig Lint
 
-# Confirms all three platform files actually parse as valid Git config and
+# confirms all three platform files actually parse as valid Git config and
 # carry the same identity/signing/hooks settings, only the credential
 # helper is expected to differ between them.
 
