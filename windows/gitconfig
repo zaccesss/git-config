@@ -11,6 +11,7 @@
 	defaultBranch = main
 [core]
 	hooksPath = ~/.git-hooks
+	sshCommand = C:/Windows/System32/OpenSSH/ssh.exe
 [credential]
 	helper = manager
 [credential "https://github.com"]
@@ -27,3 +28,7 @@
 	gpgsign = true
 [gpg "ssh"]
 	allowedSignersFile = ~/.ssh/allowed_signers
+[fetch]
+	prune = true
+[pull]
+	ff = only

@@ -27,3 +27,7 @@
 	gpgsign = true
 [gpg "ssh"]
 	allowedSignersFile = ~/.ssh/allowed_signers
+[fetch]
+	prune = true
+[pull]
+	ff = only

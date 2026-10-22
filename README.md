@@ -19,15 +19,18 @@ reconfigured from memory on every fresh machine.
   override for `github.com` and `gist.github.com` so HTTPS operations authenticate through the
   GitHub CLI's token instead of a separate stored password.
 - **Git LFS filters** - the standard `clean`, `smudge` and `process` wiring.
+- **Fetch and pull** - `fetch.prune` drops branches deleted on the remote and `pull.ff = only`
+  stops `git pull` from writing a merge commit.
 
 See [guides/reference.md](guides/reference.md) for what every section does and why.
 
-## The one per-platform difference
+## The per-platform differences
 
 Everything is identical across macOS, Linux and Windows except the credential helper:
 `osxkeychain` on macOS, `libsecret` on Linux (needs `libsecret` or `gnome-keyring` installed) and
-`manager` on Windows (bundled with Git for Windows). That is why `mac/`, `linux/` and `windows/`
-each carry their own copy rather than one file with a conditional.
+`manager` on Windows (bundled with Git for Windows). Windows also sets `core.sshCommand` to the
+Windows OpenSSH client, so Git uses the same SSH agent as `ssh`. That is why `mac/`, `linux/` and
+`windows/` each carry their own copy rather than one file with a conditional.
 
 ## Setup
 
