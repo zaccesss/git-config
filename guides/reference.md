@@ -27,6 +27,17 @@ allowedSignersFile = ~/.ssh/allowed_signers
 
 `gpg.format = ssh` tells Git to verify and produce signatures using SSH keys rather than GPG, no separate GPG keyring to manage. `allowedSignersFile` is Git's own local trust list, a plain text file mapping an email to a public key, used when Git verifies a signature locally (`git log --show-signature`). It has nothing to do with GitHub's own "Verified" badge, that's a separate check GitHub runs server-side against the public keys uploaded to the account.
 
+## `[fetch]`, `[pull]`
+
+```ini
+[fetch]
+prune = true
+[pull]
+ff = only
+```
+
+`fetch.prune` removes the remote-tracking copy of a branch once the branch is deleted on the remote, so a merged PR's branch stops showing after the next fetch or pull. `pull.ff = only` makes `git pull` move the branch forward only when that needs no merge. When local and remote have both changed, the pull stops with an error instead of writing a merge commit. The branch is then rebased or reset on purpose.
+
 ## `[core]`
 
 ```ini
@@ -34,6 +45,14 @@ hooksPath = ~/.git-hooks
 ```
 
 Points at a global hooks directory such as the one installed from [git-hooks](https://github.com/zaccesss/git-hooks), a global setting so every repo on the machine runs them without per-repo setup. Remove this line if you don't run an equivalent hooks setup.
+
+`windows/gitconfig` also sets:
+
+```ini
+sshCommand = C:/Windows/System32/OpenSSH/ssh.exe
+```
+
+Git for Windows ships its own `ssh.exe`, which cannot see keys loaded into the Windows OpenSSH agent (the `ssh-agent` service). Without this line, `ssh -T git@github.com` succeeds while `git clone` over SSH fails with `Permission denied (publickey)`. Pointing Git at the Windows client makes both use the same agent.
 
 ## `[credential]`
 

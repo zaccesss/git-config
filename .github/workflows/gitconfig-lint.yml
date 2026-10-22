@@ -2,7 +2,7 @@ name: Gitconfig Lint
 
 # confirms all three platform files actually parse as valid Git config and
 # carry the same identity/signing/hooks settings, only the credential
-# helper is expected to differ between them.
+# helper and the Windows SSH client are expected to differ between them.
 
 on:
   push:
@@ -33,9 +33,9 @@ jobs:
             git config --file "$f" --list > /dev/null
           done
 
-      - name: Confirm only credential.helper differs
+      - name: Confirm only credential.helper and core.sshCommand differ
         run: |
           for pair in "mac linux" "mac windows"; do
             set -- $pair
-            diff <(grep -v '^\s*helper = ' "$1/gitconfig") <(grep -v '^\s*helper = ' "$2/gitconfig")
+            diff <(grep -Ev '^\s*(helper|sshCommand) = ' "$1/gitconfig") <(grep -Ev '^\s*(helper|sshCommand) = ' "$2/gitconfig")
           done
